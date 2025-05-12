@@ -2,6 +2,7 @@ require "gosu"
 require_relative "point"
 require_relative "constants"
 require_relative "bullet"
+require_relative "soundtrack"
 
 SIZE = 30
 X = Constants::WINDOW_WIDTH / 2 - SIZE
@@ -29,6 +30,7 @@ class Spaceship
     now = Gosu.milliseconds
     return nil if (now - @last_fire) < RECOIL
     @last_fire = now
+    Soundtrack::Shoot.play
     Bullet.new(@position.x, @position.y)
   end
 

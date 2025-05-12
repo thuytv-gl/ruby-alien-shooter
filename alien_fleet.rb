@@ -1,6 +1,7 @@
 require_relative "point"
 require_relative "constants"
 require_relative "alien"
+require_relative "soundtrack"
 
 ALIEN_SIZE = 22
 BLOCK_SIZE = ALIEN_SIZE * 2
@@ -30,6 +31,7 @@ class AlienFleet
         if it.got_hit_by(bullet)
           bullets.delete(bullet)
           it.unalive
+          Soundtrack::Explode.play
           break
         end
       end

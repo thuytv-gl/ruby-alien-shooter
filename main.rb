@@ -4,7 +4,7 @@ require_relative "point"
 require_relative "spaceship"
 require_relative "alien_fleet"
 
-class Game < Gosu::Window
+class Main < Gosu::Window
   PADDING = 20
 
   def initialize
@@ -58,4 +58,4 @@ class Game < Gosu::Window
 
 end
 
-Game.new.show if __FILE__ == $0
+Main.new.show if __FILE__ == $0
