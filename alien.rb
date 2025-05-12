@@ -1,7 +1,7 @@
 require_relative "point"
 require_relative "constants"
 
-class Alian
+class Alien
   def initialize(x, y, size, speed = 8)
     @position = Point.new(x, y)
     @speed = speed

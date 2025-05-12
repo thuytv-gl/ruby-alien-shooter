@@ -2,7 +2,7 @@ require "gosu"
 require_relative "constants"
 require_relative "point"
 require_relative "spaceship"
-require_relative "alian_fleet"
+require_relative "alien_fleet"
 
 class Game < Gosu::Window
   PADDING = 20
@@ -16,13 +16,13 @@ class Game < Gosu::Window
     @delta_time = 0
     @spaceship = Spaceship.new
 
-    @alian_fleet = AlianFleet.new(12, 3)
+    @alien_fleet = AlienFleet.new(12, 3)
     @bullets = []
   end
 
   def draw
     @spaceship.draw
-    @alian_fleet.draw
+    @alien_fleet.draw
     @bullets.each { |it| it.draw }
   end
 
@@ -33,7 +33,7 @@ class Game < Gosu::Window
 
     @bullets.each { |it| it.update(@delta_time) }
     @spaceship.update(@delta_time)
-    @alian_fleet.update(@delta_time, @bullets)
+    @alien_fleet.update(@delta_time, @bullets)
   end
 
   def button_down(button)
