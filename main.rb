@@ -1,26 +1,61 @@
 require "gosu"
+require_relative "constants"
+require_relative "point"
+require_relative "spaceship"
+require_relative "alian_fleet"
 
-WIDTH, HEIGHT = 640, 480
-
-class Welcome < Gosu::Window
+class Game < Gosu::Window
   PADDING = 20
 
   def initialize
-    super(WIDTH, HEIGHT)
+    super(Constants::WINDOW_WIDTH, Constants::WINDOW_HEIGHT)
     
-    self.caption = "Welcome!"
+    self.caption = "Astro pew pew"
+    @rect = Point.new(0, 0)
+    @last_update = Gosu.milliseconds
+    @delta_time = 0
+    @spaceship = Spaceship.new
 
-    text =
-      "<b>Hello world</b>
-      Welcome to <b>Gosu</b>"
-    text.gsub! /^ +/, ""
-
-    @text = Gosu::Image::from_markup(text, 80, { width: WIDTH - 2 * PADDING })
+    @alian_fleet = AlianFleet.new(12, 3)
+    @bullets = []
   end
 
   def draw
-    @text.draw(PADDING, PADDING, 0)
+    @spaceship.draw
+    @alian_fleet.draw
+    @bullets.each { |it| it.draw }
   end
+
+  def update
+    now = Gosu.milliseconds
+    @delta_time = (now - @last_update) / 1000.0
+    @last_update = now
+
+    @bullets.each { |it| it.update(@delta_time) }
+    @spaceship.update(@delta_time)
+    @alian_fleet.update(@delta_time, @bullets)
+  end
+
+  def button_down(button)
+    Constants::KEYBINDS.each do |action, keys|
+      if keys.all? { |k| Gosu.button_down?(k) }
+        handle_action(action)
+      end
+    end
+  end
+
+  def handle_action(action)
+    case action
+    when :shoot
+      bullet = @spaceship.shoot
+      if bullet != nil
+        @bullets.push(bullet)
+      end
+    when :quit
+      close
+    end
+  end
+
 end
 
-Welcome.new.show if __FILE__ == $0
+Game.new.show if __FILE__ == $0
